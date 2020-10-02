@@ -41,9 +41,9 @@ def extract_features(mail_dir):
                     words = line.split()
                     for word in words:
                         wordID = 0
-                        for i, d in enumerate(dictionary):
+                        for j, d in enumerate(dictionary):
                             if d[0] == word:
-                                wordID = i
+                                wordID = j
                                 features_matrix[docID, wordID] = words.count(word)
             docID = docID + 1
     return features_matrix
