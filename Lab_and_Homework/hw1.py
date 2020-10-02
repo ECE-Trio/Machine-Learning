@@ -65,7 +65,7 @@ for i, message in enumerate(trainingSet):
     content = message[1]
     for word in content.split(" "):
         try:
-            wordIndexInDict=dictionary.index(word)
+            wordIndexInDict=dictionary.index(word.lower())
             features_matrix[i,wordIndexInDict] += 1
         except: pass #word not in dictionary
 
