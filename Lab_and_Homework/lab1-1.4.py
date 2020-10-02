@@ -11,16 +11,16 @@ def make_Dictionary(train_dir):
     emails = [os.path.join(train_dir, f) for f in os.listdir(train_dir)]
     all_words = []
 
-    for mail in emails:
+    for mail in emails:#pour chaque fichier contenant un mail
         with open(mail) as m:
-            for i, line in enumerate(m):
-                if i == 2:
+            for i, line in enumerate(m):#pour chaque ligne du fichier
+                if i == 2:#si c'est le contenu du message, pas le sujet
                     words = line.split()
                     all_words += words
 
     dictionary = Counter(all_words)
 
-    for item in list(dictionary):
+    for item in list(dictionary):#on supprime les mots pas valides
         if item.isalpha() == False:
             del dictionary[item]
         elif len(item) == 1:
