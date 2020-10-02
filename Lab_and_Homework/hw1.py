@@ -63,17 +63,23 @@ log("ok\n")
 log("\t{} unique words found ({} before cleaning)\n".format(nbWords,tmp))
 
 ##Extracting features
-log("\nExtracting features... ")
-features_matrix=np.zeros((trainingSize, nbWords))
+def extractFeaturesMatrix(set):
+    features_matrix=np.zeros((len(set), nbWords))
 
-for i, message in enumerate(trainingSet):
-    content = message[1]
-    for word in content.split(" "):
-        try:
-            wordIndexInDict=dictionary.index(word.lower())
-            features_matrix[i,wordIndexInDict] += 1
-        except: pass #word not in dictionary
+    for i, message in enumerate(set):
+        content = message[1]
+        for word in content.split(" "):
+            try:
+                wordIndexInDict=dictionary.index(word.lower())
+                features_matrix[i,wordIndexInDict] += 1
+            except: pass #word not in dictionary
 
+log("\nExtracting features :\n")
+log("\tTraining set... ")
+trainingFeaturesMatrix=extractFeaturesMatrix(trainingSet)
+log("ok\n")
+log("\tTest set... ")
+testFeaturesMatrix=extractFeaturesMatrix(testSet)
 log("ok\n")
 
 ##Fitting Naives Bayes
