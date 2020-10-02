@@ -6,7 +6,7 @@ def log(msg): print(msg,end="")
 filename = 'messages.txt'
 trainingProportion = 0.7 #70%
 
-#Importing messages
+##Importing messages
 log("Reading file... ")
 messages = np.loadtxt(filename, dtype=str, delimiter='\t')
 log("ok\n")
@@ -15,7 +15,7 @@ N = len(messages)
 trainingSize = int(N * trainingProportion)
 testSize = N - trainingSize
 
-#Splitting train and test data
+##Splitting train and test data
 log("Splitting data... ")
 trainingSet=messages[:trainingSize]
 testSet=messages[trainingSize:]
@@ -38,11 +38,11 @@ spamTestSet=np.delete(spamTestSet, 0, axis=1)
 hamTestSet=np.delete(hamTestSet, 0, axis=1)
 log("ok\n")
 
-#Making the dictionary
+##Making the dictionary
 log("Making dictionary... ")
 rawDictionary=[]
 for message in trainingSet:
-    content = message[1]
+    content = message[1].lower()
     rawDictionary += content.split(" ")
 
 rawDictionary=np.asarray(rawDictionary)
@@ -54,22 +54,32 @@ for word in rawDictionary:#We iterate on a copy of the dictionary
     if len(word) > 1 and word.isalpha():
         dictionary.append(word)
 
+nbWords=len(dictionary)
 log("ok\n")
 
-
-#Extracting features
+##Extracting features
 log("Extracting features... ")
-log("not done yet\n")
+features_matrix=np.zeros((trainingSize, nbWords))
 
-#Fitting Naives Bayes
+for i, message in enumerate(trainingSet):
+    content = message[1]
+    for word in content.split(" "):
+        try:
+            wordIndexInDict=dictionary.index(word)
+            features_matrix[i,wordIndexInDict] += 1
+        except: pass #word not in dictionary
+
+log("ok\n")
+
+##Fitting Naives Bayes
 log("Fitting Naives Bayes... ")
 log("not done yet\n")
 
-#Testing
+##Testing
 log("Testing... ")
 log("not done yet\n")
 
-#Measuring performance
+##Measuring performance
 log("Measuring performance... ")
 log("not done yet\n")
 
