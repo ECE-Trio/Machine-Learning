@@ -9,14 +9,15 @@ trainingProportion = 0.7 #70%
 ##Importing messages
 log("Reading file... ")
 messages = np.loadtxt(filename, dtype=str, delimiter='\t')
-log("ok\n")
-
 N = len(messages)
+log("ok\n")
+log("\t{} messages\n".format(N))
+
+##Splitting train and test data
+log("\nSplitting data... ")
 trainingSize = int(N * trainingProportion)
 testSize = N - trainingSize
 
-##Splitting train and test data
-log("Splitting data... ")
 trainingSet=messages[:trainingSize]
 testSet=messages[trainingSize:]
 
@@ -37,14 +38,17 @@ hamTrainingSet=np.delete(hamTrainingSet, 0, axis=1)
 spamTestSet=np.delete(spamTestSet, 0, axis=1)
 hamTestSet=np.delete(hamTestSet, 0, axis=1)
 log("ok\n")
+log("\t{} messages for training\n".format(trainingSize))
+log("\t{} messages for testing\n".format(testSize))
 
 ##Making the dictionary
-log("Making dictionary... ")
+log("\nMaking dictionary... ")
 rawDictionary=[]
 for message in trainingSet:
     content = message[1].lower()
     rawDictionary += content.split(" ")
 
+tmp=len(rawDictionary)
 rawDictionary=np.asarray(rawDictionary)
 rawDictionary=np.unique(rawDictionary)
 
@@ -56,9 +60,10 @@ for word in rawDictionary:#We iterate on a copy of the dictionary
 
 nbWords=len(dictionary)
 log("ok\n")
+log("\t{} unique words found ({} before cleaning)\n".format(nbWords,tmp))
 
 ##Extracting features
-log("Extracting features... ")
+log("\nExtracting features... ")
 features_matrix=np.zeros((trainingSize, nbWords))
 
 for i, message in enumerate(trainingSet):
@@ -72,15 +77,15 @@ for i, message in enumerate(trainingSet):
 log("ok\n")
 
 ##Fitting Naives Bayes
-log("Fitting Naives Bayes... ")
+log("\nFitting Naives Bayes... ")
 log("not done yet\n")
 
 ##Testing
-log("Testing... ")
+log("\nTesting... ")
 log("not done yet\n")
 
 ##Measuring performance
-log("Measuring performance... ")
+log("\nMeasuring performance... ")
 log("not done yet\n")
 
 
