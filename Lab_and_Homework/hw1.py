@@ -36,7 +36,7 @@ log("\t{} messages for testing\n".format(testSize))
 ##Making the dictionary
 log("\nMaking dictionary... ")
 rawDictionary=[]
-listChar=",.;!?'"
+listChar="[\'!\"$%&'()*+,-./0123456789:;<=>?@[\\]^_|~¡£¥¦¨©¬º»¼¾âãéœˆ˜–‘’“”‰€™],"
 
 for message in trainingSet:
     content = message[1].lower()
