@@ -13,6 +13,16 @@ N = len(messages)
 log("ok\n")
 log("\t{} messages\n".format(N))
 
+##Binary change
+
+# 1 if spam, 0 if not spam
+
+for value in messages:
+    if (value[0]=="spam"):
+        value[0]=1
+    else:
+        value[0]=0
+
 ##Splitting train and test data
 log("\nSplitting data... ")
 trainingSize = int(N * trainingProportion)
@@ -22,21 +32,12 @@ trainingSet=messages[:trainingSize]
 testSet=messages[trainingSize:]
 
 #Splitting ham and spam
-spamTrainingSetIndexes=[(mail[0]=="spam") for mail in trainingSet]
-hamTrainingSetIndexes=[not e for e in spamTrainingSetIndexes]
-spamTestSetIndexes=[(mail[0]=="spam") for mail in testSet]
-hamTestSetIndexes=[not e for e in spamTestSetIndexes]
+spamTrainingSetIndexes=[(mail[0]=="spam")*1 for mail in trainingSet]
 
-spamTrainingSet=trainingSet[spamTrainingSetIndexes]
-hamTrainingSet=trainingSet[hamTrainingSetIndexes]
-spamTestSet=testSet[spamTestSetIndexes]
-hamTestSet=testSet[hamTestSetIndexes]
+hamTrainingSetIndexes=[ (1-e) for e in spamTrainingSetIndexes]
+spamTestSetIndexes=[(mail[0]=="spam")*1 for mail in testSet]
+hamTestSetIndexes=[ (1-e) for e in spamTestSetIndexes]
 
-#Dropping first columns
-spamTrainingSet=np.delete(spamTrainingSet, 0, axis=1)
-hamTrainingSet=np.delete(hamTrainingSet, 0, axis=1)
-spamTestSet=np.delete(spamTestSet, 0, axis=1)
-hamTestSet=np.delete(hamTestSet, 0, axis=1)
 log("ok\n")
 log("\t{} messages for training\n".format(trainingSize))
 log("\t{} messages for testing\n".format(testSize))
