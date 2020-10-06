@@ -120,7 +120,7 @@ log("ok\n")
 
 ##Testing
 log("\nTesting... ")
-alpha=1
+alpha=0.000000000000000001
 predictList=[]
 
 for type, message in testSet:
@@ -133,8 +133,8 @@ for type, message in testSet:
     for word in words:
         try:
             wordIndexInDict=dictionary.index(word)
-            sumInSpam += countWordsInSpam[wordIndexInDict]
-            sumInHam += countWordsInHam[wordIndexInDict]
+            sumInSpam *= countWordsInSpam[wordIndexInDict]
+            sumInHam *= countWordsInHam[wordIndexInDict]
         except: pass #word not in dictionary
 
     p = (sumInSpam * phi + alpha) / (sumInHam * (1-phi) + sumInSpam * phi + 2*alpha)
@@ -147,7 +147,7 @@ log("ok\n")
 #Measuring performance
 log("\nMeasuring performance... ")
 
-def positiv_negativ(predict,test):
+def positive_negative(predict,test):
     true_positive = 0 #predicted spam and is spam
     false_positive = 0 #predicted spam and is not spam
     true_negative = 0 # predicted not spam and is not spam
@@ -164,7 +164,25 @@ def positiv_negativ(predict,test):
             false_negative+=1
     return true_positive, false_positive, true_negative, false_negative
 
-#true_positive, false_positive, true_negative, false_negative =
-print(positiv_negativ(predictList>0.5,testSet))
-
+true_positive, false_positive, true_negative, false_negative = positive_negative(predictList>0.5,testSet)
 log("ok\n")
+
+print()
+print("           \tSpam  \t  Ham")
+print("Pred Spam  \t {}   \t   {}".format(true_positive,false_positive))
+print("Pred Ham   \t {}   \t   {}".format(false_negative,true_negative))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
