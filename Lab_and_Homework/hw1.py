@@ -14,9 +14,7 @@ log("ok\n")
 log("\t{} messages\n".format(N))
 
 ##Binary change
-
 # 1 if spam, 0 if not spam
-
 for value in messages:
     if (value[0]=="spam"):
         value[0]=1
@@ -30,13 +28,6 @@ testSize = N - trainingSize
 
 trainingSet=messages[:trainingSize]
 testSet=messages[trainingSize:]
-
-#Splitting ham and spam
-spamTrainingSetIndexes=[(mail[0]=="spam")*1 for mail in trainingSet]
-
-hamTrainingSetIndexes=[ (1-e) for e in spamTrainingSetIndexes]
-spamTestSetIndexes=[(mail[0]=="spam")*1 for mail in testSet]
-hamTestSetIndexes=[ (1-e) for e in spamTestSetIndexes]
 
 log("ok\n")
 log("\t{} messages for training\n".format(trainingSize))
