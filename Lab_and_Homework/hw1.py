@@ -116,16 +116,36 @@ for type, message in trainingSet:
 countWordsInSpam = countWordsInSpam / counterSpam
 countWordsInHam = countWordsInHam / (trainingSize - counterSpam)
 phi=counterSpam/trainingSize
-
-log("not done yet\n")
+log("ok\n")
 
 ##Testing
 log("\nTesting... ")
-log("not done yet\n")
+alpha=1
+predictList=[]
 
-##Measuring performance
+for type, message in testSet:
+    content = cleanMsg(message)
+    words=content.split(" ")
+    words=np.unique(np.asarray(words))
+    sumInSpam=0
+    sumInHam=0
+
+    for word in words:
+        try:
+            wordIndexInDict=dictionary.index(word)
+            sumInSpam += countWordsInSpam[wordIndexInDict]
+            sumInHam += countWordsInHam[wordIndexInDict]
+        except: pass #word not in dictionary
+
+    p = (sumInSpam * phi + alpha) / (sumInHam * (1-phi) + sumInSpam * phi + 2*alpha)
+
+    predictList.append(p)
+
+predictList=np.asarray(predictList)
+log("ok\n")
+
+#Measuring performance
 log("\nMeasuring performance... ")
-log("not done yet\n")
 
 def positiv_negativ(predict,test):
     true_positive = 0 #predicted spam and is spam
@@ -134,19 +154,17 @@ def positiv_negativ(predict,test):
     false_negative = 0 # predicted not spam and is spam
     N = len(predict)
     for i in range(N):
-        if (predict[i][0] == 1 and test[i][0] == 1):
+        if (predict[i] and test[i][0] == "1"):
             true_positive+=1
-        if (predict[i][0] == 0 and test[i][0] == 0):
+        elif (not predict[i] and test[i][0] == "0"):
             true_negative+=1
-        if (predict[i][0] == 1 and test[i][0] == 0):
+        elif (predict[i] and test[i][0] == "0"):
             false_positive+=1
-        if (predict[i][0] == 0 and test[i][0] == 1):
+        elif (not predict[i] and test[i][0] == "1"):
             false_negative+=1
     return true_positive, false_positive, true_negative, false_negative
 
-#true_positive, false_positive, true_negative, false_negative = positiv_negativ(Matrice_prediction,testSet)
+#true_positive, false_positive, true_negative, false_negative =
+print(positiv_negativ(predictList>0.5,testSet))
 
-print()
-print(dictionary[3238]) #mot 3238
-print(trainingFeaturesMatrix[349][3238]) #msg 349, mot 3238
-print(messages[349])#msg 349
+log("ok\n")
