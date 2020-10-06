@@ -92,6 +92,7 @@ countWordsInSpam=np.zeros(nbWords)
 countWordsInHam=np.zeros(nbWords)
 counterSpam=0
 
+
 for type, message in trainingSet:
     content = cleanMsg(message)
     words=content.split(" ")
