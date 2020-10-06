@@ -44,8 +44,14 @@ log("\t{} messages for testing\n".format(testSize))
 ##Making the dictionary
 log("\nMaking dictionary... ")
 rawDictionary=[]
+listChar=",.;!?'"
+
 for message in trainingSet:
     content = message[1].lower()
+
+    for c in listChar:
+        content = content.replace(c," ")
+
     rawDictionary += content.split(" ")
 
 tmp=len(rawDictionary)
