@@ -99,6 +99,24 @@ log("not done yet\n")
 log("\nMeasuring performance... ")
 log("not done yet\n")
 
+def positiv_negativ(predict,test):
+    true_positive = 0 #predicted spam and is spam
+    false_positive = 0 #predicted spam and is not spam
+    true_negative = 0 # predicted not spam and is not spam
+    false_negative = 0 # predicted not spam and is spam
+    N = len(predict)
+    for i in range(N):
+        if (predict[i][0] == 1 and test[i][0] == 1):
+            true_positive+=1
+        if (predict[i][0] == 0 and test[i][0] == 0):
+            true_negative+=1
+        if (predict[i][0] == 1 and test[i][0] == 0):
+            false_positive+=1
+        if (predict[i][0] == 0 and test[i][0] == 1):
+            false negative+=1
+    return true_positive, false_positive, true_negative, false_negative
+
+#true_positive, false_positive, true_negative, false_negative = positiv_negativ(Matrice_prediction,testSet)
 
 print()
 print(dictionary[3238]) #mot 3238
