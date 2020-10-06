@@ -73,7 +73,7 @@ def extractFeaturesMatrix(set):
         for word in words:
             try:
                 wordIndexInDict=dictionary.index(word)
-                features_matrix[i,wordIndexInDict] = words.count(word)
+                features_matrix[i,wordIndexInDict] = 1#words.count(word)
             except: pass #word not in dictionary
 
     return features_matrix
@@ -88,6 +88,34 @@ log("ok\n")
 
 ##Fitting Naives Bayes
 log("\nFitting Naives Bayes... ")
+countWordsInSpam=np.zeros(nbWords)
+countWordsInHam=np.zeros(nbWords)
+counterSpam=0
+
+for type, message in trainingSet:
+    content = cleanMsg(message)
+    words=content.split(" ")
+    words=np.unique(np.asarray(words))
+
+    if type=="0":
+        for word in words:
+            try:
+                wordIndexInDict=dictionary.index(word)
+                countWordsInHam[wordIndexInDict]+=1
+            except: pass #word not in dictionary
+
+    elif type=="1":
+        counterSpam+=1
+
+        for word in words:
+            try:
+                wordIndexInDict=dictionary.index(word)
+                countWordsInSpam[wordIndexInDict]+=1
+            except: pass #word not in dictionary
+
+countWordsInSpam = countWordsInSpam / counterSpam
+countWordsInHam = countWordsInHam / (trainingSize - counterSpam)
+phi=counterSpam/trainingSize
 
 log("not done yet\n")
 
@@ -113,7 +141,7 @@ def positiv_negativ(predict,test):
         if (predict[i][0] == 1 and test[i][0] == 0):
             false_positive+=1
         if (predict[i][0] == 0 and test[i][0] == 1):
-            false negative+=1
+            false_negative+=1
     return true_positive, false_positive, true_negative, false_negative
 
 #true_positive, false_positive, true_negative, false_negative = positiv_negativ(Matrice_prediction,testSet)
