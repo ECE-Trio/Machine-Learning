@@ -35,15 +35,18 @@ log("\t{} messages for testing\n".format(testSize))
 
 ##Making the dictionary
 log("\nMaking dictionary... ")
+
+listChar="[\'!\"$%&'()*+,-./:;<=>?@[\\]^_|~¡£¥¦¨©¬º»¼¾âãéœˆ˜–‘’“”‰€™],"
+def cleanMsg(msg):
+    msg = msg.lower()
+    for c in listChar:
+        msg = msg.replace(c," ")
+    return msg
+
 rawDictionary=[]
-listChar="[\'!\"$%&'()*+,-./0123456789:;<=>?@[\\]^_|~¡£¥¦¨©¬º»¼¾âãéœˆ˜–‘’“”‰€™],"
 
 for message in trainingSet:
-    content = message[1].lower()
-
-    for c in listChar:
-        content = content.replace(c," ")
-
+    content = cleanMsg(message[1])
     rawDictionary += content.split(" ")
 
 tmp=len(rawDictionary)
@@ -65,12 +68,15 @@ def extractFeaturesMatrix(set):
     features_matrix=np.zeros((len(set), nbWords))
 
     for i, message in enumerate(set):
-        content = message[1]
-        for word in content.split(" "):
+        content = cleanMsg(message[1])
+        words=content.split(" ")
+        for word in words:
             try:
-                wordIndexInDict=dictionary.index(word.lower())
-                features_matrix[i,wordIndexInDict] += 1
+                wordIndexInDict=dictionary.index(word)
+                features_matrix[i,wordIndexInDict] = words.count(word)
             except: pass #word not in dictionary
+
+    return features_matrix
 
 log("\nExtracting features :\n")
 log("\tTraining set... ")
@@ -82,6 +88,7 @@ log("ok\n")
 
 ##Fitting Naives Bayes
 log("\nFitting Naives Bayes... ")
+
 log("not done yet\n")
 
 ##Testing
@@ -93,3 +100,7 @@ log("\nMeasuring performance... ")
 log("not done yet\n")
 
 
+print()
+print(dictionary[3238]) #mot 3238
+print(trainingFeaturesMatrix[349][3238]) #msg 349, mot 3238
+print(messages[349])#msg 349
