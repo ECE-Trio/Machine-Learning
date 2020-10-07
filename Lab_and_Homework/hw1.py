@@ -17,7 +17,13 @@ trainingProportion = 0.7 #70%
 
 ##Importing messages
 log("Reading file... ")
-messages = np.loadtxt(filename, dtype=str, delimiter='\t')
+try:
+    messages = np.loadtxt(filename, dtype=str, delimiter='\t')
+except:
+    print("\nError with the file {}".format(filename))
+    print("Aborting.")
+    exit(-1)
+
 N = len(messages)
 log("ok\n")
 log("\t{} messages\n".format(N))
