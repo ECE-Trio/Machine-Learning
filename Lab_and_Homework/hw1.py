@@ -92,27 +92,12 @@ countWordsInSpam=np.zeros(nbWords)
 countWordsInHam=np.zeros(nbWords)
 counterSpam=0
 
-
-for type, message in trainingSet:
-    content = cleanMsg(message)
-    words=content.split(" ")
-    words=np.unique(np.asarray(words))
-
-    if type=="0":
-        for word in words:
-            try:
-                wordIndexInDict=dictionary.index(word)
-                countWordsInHam[wordIndexInDict]+=1
-            except: pass #word not in dictionary
-
-    elif type=="1":
-        counterSpam+=1
-
-        for word in words:
-            try:
-                wordIndexInDict=dictionary.index(word)
-                countWordsInSpam[wordIndexInDict]+=1
-            except: pass #word not in dictionary
+for index, (type, message) in enumerate(trainingSet):
+    if type =="0":
+        countWordsInHam = countWordsInHam + trainingFeaturesMatrix[index]
+    if type =="1":
+        counterSpam=counterSpam+1
+        countWordsInSpam = countWordsInSpam + trainingFeaturesMatrix[index]
 
 countWordsInSpam = countWordsInSpam / counterSpam
 countWordsInHam = countWordsInHam / (trainingSize - counterSpam)
