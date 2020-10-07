@@ -79,7 +79,7 @@ def extractFeaturesMatrix(set):
         for word in words:
             try:
                 wordIndexInDict=dictionary.index(word)
-                features_matrix[i,wordIndexInDict] = 1#words.count(word)
+                features_matrix[i,wordIndexInDict] = words.count(word)
             except: pass #word not in dictionary
 
     return features_matrix
@@ -171,4 +171,4 @@ print("Correct:  {}/{} ({}%)".format(true_positive+true_negative,testSize, round
 print("Incorrect: {}/{} ({}%)".format(false_negative+false_positive,testSize, round((false_negative+false_positive)/testSize*100)))
 
 
-print("\n\nQuestion 8 - Discuss your results\n\nWe have 92% of the test emails that are correctly classified. This is quite a good result. But the main problem here is that 21 ham messages are classified has spam (which represent here 1.4% of the emails).\nHam messages in spam box can be a real problem because this can lead to a miss of important mails.\nThe first goal is to reduced the number of ham messages classified as spam. The second goal may be decrease the spam messages that are classified as ham.\nWe also tried different values for alpha and the result is better when alpha alpha tend to 0.")
+print("\n\nQuestion 8 - Discuss your results\n\nWe have 93% of the test emails that are correctly classified. This is quite a good result. But the main problem here is that 17 ham messages are classified has spam (which represent here 1.1% of the emails).\nHam messages in spam box can be a real problem because this can lead to a miss of important mails.\nThe first goal is to reduced the number of ham messages classified as spam. The second goal may be decrease the spam messages that are classified as ham.\nWe also tried different values for alpha and the result is better when alpha alpha tend to 0.")
