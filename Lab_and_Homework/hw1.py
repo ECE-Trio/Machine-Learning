@@ -1,3 +1,12 @@
+"""
+Made by the team :
+    Olivia Dalmasso
+    Alexis Direz
+    Neil Ségard
+
+Members³ of : ING5 SI DBA GR1.A
+"""
+
 import os
 import numpy as np
 
