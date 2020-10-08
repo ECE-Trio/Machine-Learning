@@ -12,7 +12,7 @@ np.random.seed(0)
 shifted_gaussian = np.random.randn(n_samples, 3) + np.array([20, 20, 20])
 
 # generate zero centered stretched Gaussian data
-C = np.array([[0., -0.7, 0], [3.5, .7, 1], [4, 1.2, -0.5]])
+C = np.array([[0., 3, 0], [3.5, .7, 1], [4, 1.2, -0.5]])
 stretched_gaussian = np.dot(np.random.randn(n_samples, 3), C)
 
 # concatenate the two datasets into the final training set
@@ -33,8 +33,16 @@ R = R.reshape(X.shape)
 
 #CS = plt.contour(X, Y, Z, R, norm=LogNorm(vmin=1.0, vmax=1000.0), levels=np.logspace(0, 3, 10))
 #CB = plt.colorbar(CS, shrink=0.8, extend='both')
-plt.scatter(X_train[:, 0], X_train[:, 1], .8)
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+ax.scatter(X_train[:, 0], X_train[:, 1], X_train[:, 2])
 
 plt.title('Negative log-likelihood predicted by a GMM')
 plt.axis('tight')
+
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
+
 plt.show()
