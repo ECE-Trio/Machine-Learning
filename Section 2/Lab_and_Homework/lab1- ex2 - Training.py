@@ -3,7 +3,7 @@ import _pickle as cPickle # for python 3.x
 # import cPickle # for python 2.x
 import numpy as np
 from scipy.io.wavfile import read
-from sklearn.mixture import GMM
+from sklearn import mixture
 import python_speech_features as mfcc
 from sklearn import preprocessing
 import warnings
@@ -31,7 +31,7 @@ for f in files:
     else:
         features = np.vstack((features, vector))
 
-gmm = GMM(n_components = 8, n_iter = 200, covariance_type='diag',
+gmm = mixture.GaussianMixture(n_components = 8, max_iter = 200, covariance_type='diag',
 n_init = 3)
 gmm.fit(features)
 picklefile = f.split("\\")[-2].split(".wav")[0]+".gmm"
