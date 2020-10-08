@@ -26,16 +26,21 @@ clf.fit(X_train)
 x = np.linspace(-20., 30.)
 y = np.linspace(-20., 40.)
 z = np.linspace(-20., 35.)
+x = np.linspace(-1., 1.)
+y = np.linspace(-1., 1.)
+z = np.linspace(-1., 1.)
 X, Y, Z = np.meshgrid(x, y, z)
 XXX = np.array([X.ravel(), Y.ravel(), Z.ravel()]).T
 R = -clf.score_samples(XXX)
 R = R.reshape(X.shape)
 
-#CS = plt.contour(X, Y, Z, R, norm=LogNorm(vmin=1.0, vmax=1000.0), levels=np.logspace(0, 3, 10))
+fig = plt.figure()
+ax = plt.axes(projection='3d')
+
+CS = ax.contour3D(X, Y, Z, 50, cmap='binary')
+#CS = ax.contour3D(X, Y, Z, R, norm=LogNorm(vmin=1.0, vmax=1000.0), levels=np.logspace(0, 3, 10))
 #CB = plt.colorbar(CS, shrink=0.8, extend='both')
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
 ax.scatter(X_train[:, 0], X_train[:, 1], X_train[:, 2])
 
 plt.title('Negative log-likelihood predicted by a GMM')
