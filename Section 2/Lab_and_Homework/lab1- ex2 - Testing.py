@@ -47,5 +47,4 @@ for f in files:
         scores = np.array(gmm.score(features))
         log_likelihood[i] = scores.sum()
         winner = np.argmax(log_likelihood)
-        print("\tdetected as - ", genders[winner],"\n\tscores:female ",
-        log_likelihood[0],",male ", log_likelihood[1],"\n")
+        print("\tdetected as - ", genders[winner],"\n\tscores:female ",log_likelihood[0],",male ", log_likelihood[1],"\n")

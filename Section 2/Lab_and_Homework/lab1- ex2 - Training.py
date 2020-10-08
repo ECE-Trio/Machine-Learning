@@ -40,4 +40,3 @@ picklefile = f.split("\\")[-2].split(".wav")[0]+".gmm"
 #cPickle.dump(gmm, open(dest + picklefile, 'w'))
 cPickle.dump(gmm,open(dest + picklefile,'wb'))
 print('modeling completed for gender:',picklefile)
-3
