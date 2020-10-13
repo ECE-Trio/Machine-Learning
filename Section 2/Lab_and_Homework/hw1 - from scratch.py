@@ -20,37 +20,61 @@ X_train = np.vstack([shifted_gaussian, stretched_gaussian])
 
 #Initialization
 J=3
-I=len(X_train)
+N,I=X_train.shape
 phi=np.ones(J)*(1/J)
-mu=np.zeros((I,J))
-sigma=np.zeros((J,I,I))
+mu=np.zeros((N,J))
+sigma=np.zeros((J,N,N))
 
-for s in sigma:
-    for i in range(I):
-        while s[i][i]==0: #to avoid having 0 in the diagonaleuhs
-            s[i][i]=1#np.random.rand()
+for j in range(J):
+    for n in range(N):
+        while sigma[j][n][n]==0: #to avoid having 0 in the diagonal
+            sigma[j][n][n]=1#np.random.rand()
 
 ## E-step
 
 W=np.zeros((I,J))
 tab=np.zeros((I,J))
 for j in range(J):
-    det = np.sqrt(np.linalg.det(sigma[j]))*(2*np.pi)**(I/2)
-    a = (X_train.T[j] - mu.T[j]).reshape(600,1)
-    b = np.linalg.inv(sigma[j])
-    e=-0.5* np.dot(np.dot(a.T, b), a)
-    c = np.exp(e)
-    d = c * phi[j] / det
+    det = 1/ ( (2*np.pi)**(N/2) * np.linalg.det(sigma[j])**0.5)
+
     for i in range(I):
-        tab[i][j] = d
+        a=(X_train[:,i] - mu[:,j]).reshape(600,1)
+        b=-0.5* np.dot(a.T, np.linalg.inv(sigma[j]))
+        c= np.dot(b, a)
+        d= np.exp(c)
+
+        tab[i][j] = det * d * phi[j]
+
 
 
 for i in range(I):
-    s=np.sum(tab[i])
+    denom=np.sum(tab[i])
+
     for j in range(J):
-        W[i][j] = tab[i][j] / s
+        W[i][j] = tab[i][j] / denom
+        W[i][j]=np.random.rand()
 
 ## M-Step
+
+Wsomme=np.sum(W,axis=0) #de dim J
+
+phi=Wsomme/I
+
+for j in range(J):
+    for i in range(I):
+        s += W[i][j] * X_train[:, i]
+    mu[:,j] = s / Wsomme[j]
+
+for j in range(J):
+    for i in range(I):
+        a=(X_train[:,i] - mu[:,j]).reshape(600,1)
+        s = W[i][j] * a * a.T
+    sigma[j]= s / Wsomme[j]
+
+
+
+
+"""
 
 # new mu optimized
 W_sum_j=[0,0,0]
@@ -83,7 +107,7 @@ for j in range(J):
 
 
 
-"""
+
 # display predicted scores by the model as a contour plot
 x = np.linspace(-20., 30., num = 7)
 y = np.linspace(-20., 40., num = 7)
