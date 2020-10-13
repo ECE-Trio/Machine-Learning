@@ -30,7 +30,7 @@ for s in sigma:
         while s[i][i]==0: #to avoid having 0 in the diagonaleuhs
             s[i][i]=1#np.random.rand()
 
-
+## E-step
 
 W=np.zeros((I,J))
 tab=np.zeros((I,J))
@@ -49,6 +49,38 @@ for i in range(I):
     s=np.sum(tab[i])
     for j in range(J):
         W[i][j] = tab[i][j] / s
+
+## M-Step
+
+# new mu optimized
+W_sum_j=[0,0,0]
+
+mu_transpose_j = np.shape((J,I))
+for j in range(J):
+    sum = 0
+    sum_omega=0
+    for i in range(I):
+        sum+=W[i][j]*X_train[i]
+        sum_omega+= W[i][j]
+    W_sum_j[j]=sum_omega
+    mu_transpose_j [j] = sum / W_sum_j[j]
+mu = mu_transpose_j.T
+
+#new phi optimized
+
+for j in range(J):
+    phi[j]= W_sum_j[j]/I
+
+# new sigma optimized
+
+for j in range(J):
+    sum = 0
+    for i in range(I):
+        sum+=W[i][j] * np.dot(X[i]-mu_transpose_j[j], (X[i]-mu_transpose_j[j]).T )
+    sigma[j]= sum / W_sum_j[j]
+
+## Y predict
+
 
 
 """
