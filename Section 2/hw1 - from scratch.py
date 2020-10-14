@@ -61,6 +61,7 @@ Wsomme=np.sum(W,axis=0) #de dim J
 phi=Wsomme/I
 
 for j in range(J):
+    s=0
     for i in range(I):
         s += W[i][j] * X_train[:, i]
     mu[:,j] = s / Wsomme[j]
