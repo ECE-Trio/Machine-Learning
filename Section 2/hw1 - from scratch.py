@@ -22,55 +22,56 @@ X_train = np.vstack([shifted_gaussian, stretched_gaussian])
 J=3
 N,I=X_train.shape
 phi=np.ones(J)*(1/J)
-mu=np.zeros((N,J))
 sigma=np.zeros((J,N,N))
+mu=np.zeros((N,J))
+#mu=np.ones((N,J))*X_train[0]
+W=np.zeros((I,J))
+tab=np.zeros((I,J))
 
 for j in range(J):
     for n in range(N):
         while sigma[j][n][n]==0: #to avoid having 0 in the diagonal
             sigma[j][n][n]=1#np.random.rand()
 
-## E-step
 
-W=np.zeros((I,J))
-tab=np.zeros((I,J))
-for j in range(J):
-    det = 1/ ( (2*np.pi)**(N/2) * np.linalg.det(sigma[j])**0.5)
 
+for iter in range(10):
+    # E-step
+    for j in range(J):
+        det = 1/ ( (2*np.pi)**(N/2) * np.linalg.det(sigma[j])**0.5)
+
+        for i in range(I):
+            a=(X_train[:,i] - mu[:,j]).reshape(600,1)
+            b=-0.5* np.dot(a.T, np.linalg.inv(sigma[j]))
+            c= np.dot(b, a)
+            d= np.exp(c)
+
+            tab[i][j] = det * d * phi[j]
+
+    alpha=0.01
     for i in range(I):
-        a=(X_train[:,i] - mu[:,j]).reshape(600,1)
-        b=-0.5* np.dot(a.T, np.linalg.inv(sigma[j]))
-        c= np.dot(b, a)
-        d= np.exp(c)
+        denom=np.sum(tab[i])
 
-        tab[i][j] = det * d * phi[j]
+        for j in range(J):
+            W[i][j] = (tab[i][j] + alpha) / (denom + alpha*J)
+            #W[i][j]=np.random.rand()
 
+    # M-Step
+    Wsomme=np.sum(W,axis=0) #de dim J
 
-
-for i in range(I):
-    denom=np.sum(tab[i])
+    phi=Wsomme/I
 
     for j in range(J):
-        W[i][j] = tab[i][j] / denom
-        W[i][j]=np.random.rand()
+        s=0
+        for i in range(I):
+            s += W[i][j] * X_train[:, i]
+        mu[:,j] = s / Wsomme[j]
 
-## M-Step
-
-Wsomme=np.sum(W,axis=0) #de dim J
-
-phi=Wsomme/I
-
-for j in range(J):
-    s=0
-    for i in range(I):
-        s += W[i][j] * X_train[:, i]
-    mu[:,j] = s / Wsomme[j]
-
-for j in range(J):
-    for i in range(I):
-        a=(X_train[:,i] - mu[:,j]).reshape(600,1)
-        s = W[i][j] * a * a.T
-    sigma[j]= s / Wsomme[j]
+    for j in range(J):
+        for i in range(I):
+            a=(X_train[:,i] - mu[:,j]).reshape(600,1)
+            s = W[i][j] * a * a.T
+        sigma[j]= s / Wsomme[j]
 
 
 
