@@ -33,9 +33,7 @@ for j in range(J):
         while sigma[j][n][n]==0: #to avoid having 0 in the diagonal
             sigma[j][n][n]=1#np.random.rand()
 
-
-
-for iter in range(10):
+for iter in range(2):
     # E-step
     for j in range(J):
         det = 1/ ( (2*np.pi)**(N/2) * np.linalg.det(sigma[j])**0.5)
@@ -73,7 +71,12 @@ for iter in range(10):
             s = W[i][j] * a * a.T
         sigma[j]= s / Wsomme[j]
 
-
+    print("phi")
+    print(phi)
+    print("\nmu")
+    print(mu)
+    print("\nsigma[0]")
+    print(sigma[0])
 
 
 """
