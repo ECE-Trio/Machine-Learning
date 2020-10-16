@@ -18,13 +18,16 @@ stretched_gaussian = np.dot(np.random.randn(n_samples, 3), C)
 # concatenate the two datasets into the final training set
 X_train = np.vstack([shifted_gaussian, stretched_gaussian])
 
+#Normalization of X_train
+max=np.max(abs(X_train))
+X_train = X_train / max
+
 #Initialization
-J=3
+J=2
 N,I=X_train.shape
 phi=np.ones(J)*(1/J)
 sigma=np.zeros((J,N,N))
 mu=np.zeros((N,J))
-#mu=np.ones((N,J))*X_train[0]
 W=np.zeros((I,J))
 tab=np.zeros((I,J))
 
@@ -33,7 +36,14 @@ for j in range(J):
         while sigma[j][n][n]==0: #to avoid having 0 in the diagonal
             sigma[j][n][n]=1#np.random.rand()
 
-for iter in range(2):
+print("phi")
+print(phi)
+print("\nmu")
+print(mu)
+print("\nsigma[0]")
+print(sigma[0])
+
+for iter in range(1):
     # E-step
     for j in range(J):
         det = 1/ ( (2*np.pi)**(N/2) * np.linalg.det(sigma[j])**0.5)
@@ -80,6 +90,19 @@ for iter in range(2):
 
 
 """
+OBJECTIF
+
+
+NOTES
+phi = moyenne de chaque colonnes de W
+a * a.T = somme des carrés des diff entre Xi et muj
+I = dimension d'un point
+
+
+
+
+
+
 
 # new mu optimized
 W_sum_j=[0,0,0]
