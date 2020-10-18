@@ -1,3 +1,12 @@
+"""
+Made by the team :
+    Olivia Dalmasso
+    Alexis Direz
+    Neil Ségard
+
+Members³ of : ING5 SI DBA GR1.A
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LogNorm
@@ -29,7 +38,6 @@ W=np.zeros((I,J))
 tab=np.zeros((I,J))
 Wold=np.ones((I,J))
 
-#for test
 mu[1] += 0.5
 
 for j in range(J):
@@ -46,10 +54,10 @@ while np.sum(abs(Wold-W)>0.01) != 0:
     counter += 1
 
     # E-step
-    for j in range(J): #pour chaque cluster
+    for j in range(J): #for each cluster
         det = 1/ ( (2*np.pi)**(N/2) * np.linalg.det(sigma[j])**0.5)
 
-        for i in range(I):#pour chaque point
+        for i in range(I):#for each point
             a = (X_train[i] - mu[j]).reshape(3,1)
             b = -0.5 * np.dot(a.T, np.linalg.inv(sigma[j]))
             c = np.dot(b, a)
@@ -87,10 +95,6 @@ while np.sum(abs(Wold-W)>0.01) != 0:
     print("Epoch:", counter)
     print("mu")
     print(mu * max)
-    #print("phi")
-    #print(phi)
-    #print("\nsigma[0]")
-    #print(sigma[0])
 
 
 X_train *= max
@@ -101,17 +105,6 @@ print()
 print("Final mu (in {} epochs):".format(counter))
 print(mu)
 
-"""
-OBJECTIF
-
-
-NOTES
-phi = moyenne de chaque colonnes de W
-    P(Z(i) = j) = phi(j)
-a * a.T = somme des carrés des diff entre Xi et muj
-I = dimension d'un point
-
-"""
 
 ##Finding radiuses
 distances=np.zeros(J)
@@ -123,9 +116,7 @@ for i in range(I):
         distances[cluster]=dist
 
 
-
 ## Plotting
-
 def WireframeSphere(centre=[0.,0.,0.], radius=1.,
                     n_meridians=20, n_circles_latitude=None):
 
