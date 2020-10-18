@@ -113,6 +113,16 @@ I = dimension d'un point
 
 """
 
+##Finding radiuses
+distances=np.zeros(J)
+for i in range(I):
+    cluster = (W[i][0] < W[i][1])*1
+    dist = np.linalg.norm(X_train[i]-mu[cluster])
+
+    if dist > distances[cluster]:
+        distances[cluster]=dist
+
+
 
 ## Plotting
 
@@ -133,10 +143,14 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 for j in range(J):
-    frame_xs, frame_ys, frame_zs = WireframeSphere(mu[j], 4)
+    frame_xs, frame_ys, frame_zs = WireframeSphere(mu[j], distances[j])
     ax.plot_surface(frame_xs, frame_ys, frame_zs, color="g", alpha=0.5)
 
 ax.scatter(X_train[:, 0], X_train[:, 1], X_train[:, 2])
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
+
 
 plt.show()
 
