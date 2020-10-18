@@ -95,46 +95,15 @@ OBJECTIF
 
 NOTES
 phi = moyenne de chaque colonnes de W
+    P(Z(i) = j) = phi(j)
 a * a.T = somme des carrés des diff entre Xi et muj
 I = dimension d'un point
 
+"""
 
 
-
-
-
-
-# new mu optimized
-W_sum_j=[0,0,0]
-
-mu_transpose_j = np.shape((J,I))
-for j in range(J):
-    sum = 0
-    sum_omega=0
-    for i in range(I):
-        sum+=W[i][j]*X_train[i]
-        sum_omega+= W[i][j]
-    W_sum_j[j]=sum_omega
-    mu_transpose_j [j] = sum / W_sum_j[j]
-mu = mu_transpose_j.T
-
-#new phi optimized
-
-for j in range(J):
-    phi[j]= W_sum_j[j]/I
-
-# new sigma optimized
-
-for j in range(J):
-    sum = 0
-    for i in range(I):
-        sum+=W[i][j] * np.dot(X[i]-mu_transpose_j[j], (X[i]-mu_transpose_j[j]).T )
-    sigma[j]= sum / W_sum_j[j]
-
-## Y predict
-
-
-
+## Plotting
+"""
 
 # display predicted scores by the model as a contour plot
 x = np.linspace(-20., 30., num = 7)
