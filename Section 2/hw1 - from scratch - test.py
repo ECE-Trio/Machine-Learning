@@ -10,13 +10,10 @@ np.random.seed(0)
 
 # generate spherical data centered on (20, 20, 20)
 shifted_gaussian = np.random.randn(n_samples, 3) + np.array([20, 20, 20])
-
-# generate zero centered stretched Gaussian data
-C = np.array([[0., 3, 0], [3.5, .7, 1], [4, 1.2, -0.5]])
-stretched_gaussian = np.dot(np.random.randn(n_samples, 3), C)
+shifted_gaussian2 = np.random.randn(n_samples, 3) + np.array([12, 13, 14])
 
 # concatenate the two datasets into the final training set
-X_train = np.vstack([shifted_gaussian, stretched_gaussian])
+X_train = np.vstack([shifted_gaussian, shifted_gaussian2])
 
 #Normalization of X_train
 max=np.max(abs(X_train))
@@ -24,45 +21,49 @@ X_train = X_train / max
 
 #Initialization
 J=2
-N,I=X_train.shape
+I,N=X_train.shape
 phi=np.ones(J)*(1/J)
 sigma=np.zeros((J,N,N))
-mu=np.zeros((N,J))
+mu=np.zeros((J,N))
 W=np.zeros((I,J))
 tab=np.zeros((I,J))
+Wold=np.ones((I,J))
+
+#for test
+mu[1] += 0.5
 
 for j in range(J):
     for n in range(N):
         while sigma[j][n][n]==0: #to avoid having 0 in the diagonal
-            sigma[j][n][n]=2#np.random.rand()
+            sigma[j][n][n]=np.random.rand()
 
-print("phi")
-print(phi)
+print("Epoch 0 (init):")
 print("\nmu")
-print(mu)
-print("\nsigma[0]")
-print(sigma[0])
+print(mu * max)
 
-for iter in range(1):
+counter=0
+while np.sum(abs(Wold-W)>0.01) != 0:
+    counter += 1
+
     # E-step
-    for j in range(J):
+    for j in range(J): #pour chaque cluster
         det = 1/ ( (2*np.pi)**(N/2) * np.linalg.det(sigma[j])**0.5)
 
-        for i in range(I):
-            a = (X_train[:,i] - mu[:,j]).reshape(600,1)
+        for i in range(I):#pour chaque point
+            a = (X_train[i] - mu[j]).reshape(3,1)
             b = -0.5 * np.dot(a.T, np.linalg.inv(sigma[j]))
             c = np.dot(b, a)
             d = np.exp(c)
 
             tab[i][j] = det * d * phi[j]
 
-    alpha=0.01
+    Wold=np.copy(W)
+    alpha=0
     for i in range(I):
         denom=np.sum(tab[i])
 
         for j in range(J):
             W[i][j] = (tab[i][j] + alpha) / (denom + alpha*J)
-            #W[i][j]=np.random.rand()
 
     # M-Step
     Wsomme=np.sum(W,axis=0) #de dim J
@@ -72,23 +73,30 @@ for iter in range(1):
     for j in range(J):
         s=0
         for i in range(I):
-            s += W[i][j] * X_train[:, i]
-        mu[:,j] = s / Wsomme[j]
+            s += W[i][j] * X_train[i]
+        mu[j] = s / Wsomme[j]
 
-    print(1)
     for j in range(J):
+        s=0
         for i in range(I):
-            a=(X_train[:,i] - mu[:,j]).reshape(600,1)
-            s = W[i][j] * a * a.T
+            a=(X_train[i] - mu[j]).reshape(3,1)
+            s += W[i][j] * np.dot(a, a.T)
         sigma[j]= s / Wsomme[j]
 
-    print("phi")
-    print(phi)
-    print("\nmu")
-    print(mu)
-    print("\nsigma[0]")
-    print(sigma[0])
+    print()
+    print("Epoch:", counter)
+    print("mu")
+    print(mu * max)
+    #print("phi")
+    #print(phi)
+    #print("\nsigma[0]")
+    #print(sigma[0])
 
+
+print()
+print()
+print("Final mu (in {} epochs):".format(counter))
+print(mu * max)
 
 """
 OBJECTIF
