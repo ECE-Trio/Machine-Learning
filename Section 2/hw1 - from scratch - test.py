@@ -93,10 +93,13 @@ while np.sum(abs(Wold-W)>0.01) != 0:
     #print(sigma[0])
 
 
+X_train *= max
+mu *= max
+
 print()
 print()
 print("Final mu (in {} epochs):".format(counter))
-print(mu * max)
+print(mu)
 
 """
 OBJECTIF
@@ -112,32 +115,28 @@ I = dimension d'un point
 
 
 ## Plotting
-"""
 
-# display predicted scores by the model as a contour plot
-x = np.linspace(-20., 30., num = 7)
-y = np.linspace(-20., 40., num = 7)
-z = np.linspace(-20., 35., num = 7)
-X, Y, Z = np.meshgrid(x, y, z)
-XXX = np.array([X.ravel(), Y.ravel(), Z.ravel()]).T
-S = -clf.score_samples(XXX)
-S = S.reshape(X.shape)
+def WireframeSphere(centre=[0.,0.,0.], radius=1.,
+                    n_meridians=20, n_circles_latitude=None):
 
+    if n_circles_latitude is None:
+        n_circles_latitude = np.max([n_meridians/2, 4])
+
+    u, v = np.mgrid[0:2*np.pi:n_meridians*1j, 0:np.pi:n_circles_latitude*1j]
+    sphere_x = centre[0] + radius * np.cos(u) * np.sin(v)
+    sphere_y = centre[1] + radius * np.sin(u) * np.sin(v)
+    sphere_z = centre[2] + radius * np.cos(v)
+    return sphere_x, sphere_y, sphere_z
+
+#draw sphere
 fig = plt.figure()
-ax = plt.axes(projection='3d')
+ax = fig.add_subplot(111, projection='3d')
 
-ax.scatter(X, Y, Z)
-
-#CB = plt.colorbar(CS, shrink=0.8, extend='both')
+for j in range(J):
+    frame_xs, frame_ys, frame_zs = WireframeSphere(mu[j], 4)
+    ax.plot_surface(frame_xs, frame_ys, frame_zs, color="g", alpha=0.5)
 
 ax.scatter(X_train[:, 0], X_train[:, 1], X_train[:, 2])
 
-plt.title('Negative log-likelihood predicted by a GMM')
-plt.axis('tight')
-
-ax.set_xlabel('X Label')
-ax.set_ylabel('Y Label')
-ax.set_zlabel('Z Label')
-
 plt.show()
-"""
+
