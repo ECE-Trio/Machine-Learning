@@ -6,12 +6,9 @@ Made by the team :
 
 Members³ of : ING5 SI DBA GR1.A
 """
-#Import
 
+#Import
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.colors import LogNorm
-from sklearn import mixture
 
 # Variables
 Z = [0,1,2,3]
