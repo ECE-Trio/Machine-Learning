@@ -20,13 +20,16 @@ K = 5 #number of hidden states X including x0
 a_ij = np.zeros((N,N))
 b_jk = np.zeros((N,K))
 
-#We suppose at time t=0 we are at Z1
+X= [1,3,2,0]
+T=len(X)
+
+path = [1] #We suppose at time t=0 we are at Z1
 
 def alpha_j(j,t):
     sum=0
-    if j = 1 and t=0:
+    if j == 1 and t==0:
         return 1
-    else if j =! 1 and t=0:
+    elif (j != 1 and t==0):
         return 0
     else:
         for i in range(N):
