@@ -50,20 +50,28 @@ def calculAlpha(Z, X, a, b, X_target):
         jMax = np.argmax(alpha.T[t])
         path.append(jMax)
 
-    return path
-
-print(calculAlpha(Z, X, a, b, X_target))
+    return path, alpha
 
 
+def probaPath(path, alpha):
+    proba = 1
+    T=alpha.shape[1]-1
 
+    for t in range(T+1):
+        proba *= alpha[path[t]][t]
 
+    return proba
 
-def alpha_j(j,t):
-    sum=0
-    if j == 1 and t==0:
-        return 1
-    elif (j != 1 and t==0):
-        return 0
-    else:
-        for i in range(N):
-            sum+= alpha_j(i,t-1)*a_ij[i,j]*b_jk[j,k]  # comment choisir le k ?
+path, alpha = calculAlpha(Z, X, a, b, X_target)
+
+print("path")
+print(path)
+
+print()
+print("alpha")
+print(alpha)
+
+print()
+print("proba of the path")
+print(probaPath(path, alpha))
+
