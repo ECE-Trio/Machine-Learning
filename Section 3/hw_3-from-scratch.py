@@ -9,6 +9,7 @@ Members³ of : ING5 SI DBA GR1.A
 
 #Import
 import numpy as np
+np.set_printoptions(suppress=True)
 
 # Variables
 Z = [0,1,2,3]
@@ -63,10 +64,12 @@ path, alpha = calculAlpha(Z, X, a, b, X_target)
 
 print("path")
 print(path)
+print("Note : We have exactly the same sequence of states as the example is the pdf's course")
 
 print()
 print("alpha")
 print(alpha)
+print("Note : We have exactly the same array as the example is the pdf's course")
 
 print()
 print("proba of the path")
